@@ -222,31 +222,46 @@
     const scriptURL = "https://script.google.com/macros/s/AKfycbxhknB8-1_RUiNrXpBjDpZHkh3Pqau9GewUavoq8DU1SBnIjCvYc0kN5GoZ1CB5CE8/exec"; // Replace with your Google Apps Script URL
 
     async function submitData() {
-      const data = {
-        delivery: document.getElementById("delivery").value,
-        orderNo: document.getElementById("orderNo").value,
-        date: document.getElementById("date").value,
-        docsp: document.getElementById("docsp").value,
-        name: document.getElementById("name").value,
-        phone: document.getElementById("phone").value,
-        total: document.getElementById("total").value,
-        adv: document.getElementById("adv").value,
-        frame: document.getElementById("frame").value,
-        lens: document.getElementById("lens").value,
-        sent: document.getElementById("sent").value,
-        rec: document.getElementById("rec").value,
-        informed: document.getElementById("informed").value,
-        feedback: document.getElementById("feedback").value
-      };
+    const data = {
+      delivery: document.getElementById("delivery").value,
+      orderNo: document.getElementById("orderNo").value,
+      date: document.getElementById("date").value,
+      docsp: document.getElementById("docsp").value,
+      name: document.getElementById("name").value,
+      phone: document.getElementById("phone").value,
+      total: document.getElementById("total").value,
+      adv: document.getElementById("adv").value,
+      frame: document.getElementById("frame").value,
+      lens: document.getElementById("lens").value,
+      sent: document.getElementById("sent").value,
+      rec: document.getElementById("rec").value,
+      informed: document.getElementById("informed").value,
+      feedback: document.getElementById("feedback").value,
+    };
 
-      try {
-        await fetch(scriptURL, { method: "POST", body: JSON.stringify(data) });
+    try {
+      const res = await fetch(scriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+
+      if (result.status === "success") {
         document.getElementById("msg").textContent = "✅ Data submitted successfully!";
+        document.getElementById("msg").style.color = "green";
         document.querySelectorAll("input, select").forEach(el => el.value = "");
-      } catch (err) {
-        document.getElementById("msg").textContent = "❌ Error submitting data.";
+      } else {
+        document.getElementById("msg").textContent = "❌ Error: " + (result.message || "Try again.");
+        document.getElementById("msg").style.color = "red";
       }
+    } catch (err) {
+      document.getElementById("msg").textContent = "❌ Network or server error.";
+      document.getElementById("msg").style.color = "red";
+      console.error(err);
     }
+  }
   </script>
 </body>
 </html>

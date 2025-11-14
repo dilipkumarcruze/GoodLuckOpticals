@@ -41,7 +41,7 @@
     }
 
     .form-container {
-      margin-top: 100px; /* space for navbar */
+      margin-top: 100px;
       background: #fff;
       border-radius: 12px;
       padding: 30px;
@@ -50,19 +50,9 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
 
-    h2 {
-      text-align: center;
-      color: #333;
-      margin-bottom: 25px;
-      font-weight: 600;
-    }
+    h2 { text-align: center; color: #333; margin-bottom: 25px; font-weight: 600; }
 
-    label {
-      font-weight: 500;
-      color: #333;
-      margin-bottom: 6px;
-      display: block;
-    }
+    label { font-weight: 500; color: #333; margin-bottom: 6px; display: block; }
 
     input, select, textarea {
       width: 100%;
@@ -75,18 +65,12 @@
       margin-bottom: 14px;
     }
 
-    input::placeholder {
-      color: #999;
-    }
+    input::placeholder { color: #999; }
 
     input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: #333;
       box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    .form-row {
-      margin-bottom: 18px;
     }
 
     button {
@@ -100,9 +84,7 @@
       transition: 0.3s;
     }
 
-    button:hover {
-      background: #555;
-    }
+    button:hover { background: #555; }
 
     /* Flatpickr Custom Theme - White BG */
     .flatpickr-calendar {
@@ -127,7 +109,7 @@
 
   <div class="form-container">
     <h2>Delivery Entry</h2>
-    <form>
+    <form id="deliveryForm">
       <div class="form-row">
         <label>Delivery Date</label>
         <input id="delivery" type="text" placeholder="Select Date" readonly />
@@ -194,14 +176,12 @@
 
       <div class="form-row">
         <label>Sent Date/Time</label>
-                <input id="sent" type="text" placeholder="Select Date" readonly />
-
+        <input id="sent" type="text" placeholder="Select Date" readonly />
       </div>
 
       <div class="form-row">
         <label>Received Date/Time</label>
-                <input id="rec" type="text" placeholder="Select Date" readonly />
-
+        <input id="rec" type="text" placeholder="Select Date" readonly />
       </div>
 
       <div class="form-row">
@@ -232,11 +212,9 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalTitle">Message</h5>
+          <h5 class="modal-title">Message</h5>
         </div>
-        <div class="modal-body" id="modalBody">
-          <!-- message text -->
-        </div>
+        <div class="modal-body" id="modalBody"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-dark" data-bs-dismiss="modal">OK</button>
         </div>
@@ -254,38 +232,38 @@
     flatpickr("#sent", { dateFormat: "d M Y" });
     flatpickr("#rec", { dateFormat: "d M Y" });
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzQuoj1KbodTXIdLZKVcX3VTK1DGGI3UkUXJzQMU90dyG1qFHUjCldS4ViOfKyWSJrj/exec";
+    const scriptURL = "https://script.google.com/macros/s/AKfycby0EmWd_BMQa5HS4dr3iC5ZU9CiHQ6Ofi5lhi7zTtk_e2OvrOs9ZBKzesSfLrTVBEKl/exec"; // must be deployed as Web App Anyone, even anonymous
     const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
 
     async function submitData() {
-      const data = {
-        delivery: delivery.value,
-        orderNo: orderNo.value,
-        date: orderDate.value,
-        docsp: docsp.value,
-        name: name.value,
-        phone: phone.value,
-        total: total.value,
-        adv: adv.value,
-        frame: frame.value,
-        lens: lens.value,
-        sent: sent.value,
-        rec: rec.value,
-        informed: informed.value,
-        feedback: feedback.value
+      const formData = {
+        delivery: document.getElementById('delivery').value,
+        orderNo: document.getElementById('orderNo').value,
+        date: document.getElementById('orderDate').value,
+        docsp: document.getElementById('docsp').value,
+        name: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+        total: document.getElementById('total').value,
+        adv: document.getElementById('adv').value,
+        frame: document.getElementById('frame').value,
+        lens: document.getElementById('lens').value,
+        sent: document.getElementById('sent').value,
+        rec: document.getElementById('rec').value,
+        informed: document.getElementById('informed').value,
+        feedback: document.getElementById('feedback').value
       };
 
       let message = '';
       try {
         const res = await fetch(scriptURL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify(formData),
+          headers: { "Content-Type": "application/json" }
         });
 
         const result = await res.json();
         message = result.status === "success" ? "Data submitted successfully!" : "Error submitting data.";
-      } catch (err) {
+      } catch(err) {
         message = "Network or server error.";
       }
 

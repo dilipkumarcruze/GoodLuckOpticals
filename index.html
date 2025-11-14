@@ -232,44 +232,43 @@
     flatpickr("#sent", { dateFormat: "d M Y" });
     flatpickr("#rec", { dateFormat: "d M Y" });
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycby0EmWd_BMQa5HS4dr3iC5ZU9CiHQ6Ofi5lhi7zTtk_e2OvrOs9ZBKzesSfLrTVBEKl/exec"; // must be deployed as Web App Anyone, even anonymous
+    const scriptURL = "https://script.google.com/macros/s/AKfycbx9b3Zh2nM_3xxf3X_Lzt4cBUlssgIbNyOKXl2_DWPhBJrehNGaN-r_0uvUoc9RFrgD/exec"; // must be deployed as Web App Anyone, even anonymous
     const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
 
     async function submitData() {
-      const formData = {
-        delivery: document.getElementById('delivery').value,
-        orderNo: document.getElementById('orderNo').value,
-        date: document.getElementById('orderDate').value,
-        docsp: document.getElementById('docsp').value,
-        name: document.getElementById('name').value,
-        phone: document.getElementById('phone').value,
-        total: document.getElementById('total').value,
-        adv: document.getElementById('adv').value,
-        frame: document.getElementById('frame').value,
-        lens: document.getElementById('lens').value,
-        sent: document.getElementById('sent').value,
-        rec: document.getElementById('rec').value,
-        informed: document.getElementById('informed').value,
-        feedback: document.getElementById('feedback').value
-      };
+  const formData = new FormData();
+  formData.append('delivery', delivery.value);
+  formData.append('orderNo', orderNo.value);
+  formData.append('date', orderDate.value);
+  formData.append('docsp', docsp.value);
+  formData.append('name', name.value);
+  formData.append('phone', phone.value);
+  formData.append('total', total.value);
+  formData.append('adv', adv.value);
+  formData.append('frame', frame.value);
+  formData.append('lens', lens.value);
+  formData.append('sent', sent.value);
+  formData.append('rec', rec.value);
+  formData.append('informed', informed.value);
+  formData.append('feedback', feedback.value);
 
-      let message = '';
-      try {
-        const res = await fetch(scriptURL, {
-          method: "POST",
-          body: JSON.stringify(formData),
-          headers: { "Content-Type": "application/json" }
-        });
+  let message = '';
+  try {
+    const res = await fetch(scriptURL, {
+      method: "POST",
+      body: formData // <--- plain form data
+    });
 
-        const result = await res.json();
-        message = result.status === "success" ? "Data submitted successfully!" : "Error submitting data.";
-      } catch(err) {
-        message = "Network or server error.";
-      }
+    const result = await res.json();
+    message = result.status === "success" ? "Data submitted successfully!" : "Error submitting data.";
+  } catch(err) {
+    message = "Network or server error.";
+  }
 
-      document.getElementById('modalBody').textContent = message;
-      responseModal.show();
-    }
+  document.getElementById('modalBody').textContent = message;
+  responseModal.show();
+}
+
   </script>
 </body>
 </html>

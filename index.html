@@ -13,146 +13,67 @@
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #f7f7f7;
-      min-height: 100vh;
-      margin: 0;
-      padding: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: #fff;
-      border-bottom: 1px solid #ddd;
-      text-align: center;
-      padding: 1rem;
-      font-weight: 600;
-      font-size: 1.5rem;
-      color: #333;
-      z-index: 1000;
-    }
-
-    .form-container {
-      margin-top: 100px;
-      background: #fff;
-      border-radius: 12px;
-      padding: 30px;
-      width: 100%;
-      max-width: 900px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-
+    body { font-family: 'Inter', sans-serif; background: #f7f7f7; min-height: 100vh; margin: 0; padding: 16px; display: flex; justify-content: center; align-items: flex-start; }
+    nav { position: fixed; top: 0; left: 0; right: 0; background: #fff; border-bottom: 1px solid #ddd; text-align: center; padding: 1rem; font-weight: 600; font-size: 1.5rem; color: #333; z-index: 1000; display: flex; justify-content: space-between; align-items: center; }
+    nav button { padding: 6px 12px; font-size: 14px; border-radius: 8px; border: none; background: #333; color: #fff; }
+    nav button:hover { background: #555; }
+    .form-container { margin-top: 100px; background: #fff; border-radius: 12px; padding: 30px; width: 100%; max-width: 900px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
     h2 { text-align: center; color: #333; margin-bottom: 25px; font-weight: 600; }
-
     label { font-weight: 500; color: #333; margin-bottom: 6px; display: block; }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 14px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-      background: #fff;
-      color: #000;
-      margin-bottom: 14px;
-    }
-
+    input, select, textarea { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; background: #fff; color: #000; margin-bottom: 14px; }
     input::placeholder { color: #999; }
-
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #333;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    }
-
-    button {
-      background: #333;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: 600;
-      padding: 14px 0;
-      width: 100%;
-      transition: 0.3s;
-    }
-
-    button:hover { background: #555; }
-
-    /* Flatpickr Custom Theme - White BG */
-    .flatpickr-calendar {
-      border-radius: 12px !important;
-      background: #fff !important;
-      color: #000 !important;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
-    }
-
-    .flatpickr-day.selected,
-    .flatpickr-day.startRange,
-    .flatpickr-day.endRange {
-      background: #333 !important;
-      border-color: #333 !important;
-      color: #fff !important;
-    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: #333; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    button.submit-btn { background: #333; border: none; border-radius: 8px; color: white; font-weight: 600; padding: 14px 0; width: 100%; transition: 0.3s; }
+    button.submit-btn:hover { background: #555; }
+    .flatpickr-calendar { border-radius: 12px !important; background: #fff !important; color: #000 !important; box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important; }
+    .flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange { background: #333 !important; border-color: #333 !important; color: #fff !important; }
   </style>
 </head>
 
 <body>
-  <nav>Good Luck Optical</nav>
+  <nav>
+    Good Luck Optical
+    <button id="updateOrderBtn">Update Order</button>
+  </nav>
 
   <div class="form-container">
     <h2>Delivery Entry</h2>
     <form id="deliveryForm">
       <div class="form-row">
         <label>Delivery Date</label>
-        <input id="delivery" type="text" placeholder="Select Date" readonly />
+        <input id="delivery" type="text" placeholder="Select Date" readonly required />
       </div>
-
       <div class="form-row">
         <label>Order No</label>
-        <input id="orderNo" type="text" placeholder="e.g. 1494" />
+        <input id="orderNo" type="text" placeholder="e.g. 1494" required />
       </div>
-
       <div class="form-row">
         <label>Order Date</label>
-        <input id="orderDate" type="text" placeholder="Select Date" readonly />
+        <input id="orderDate" type="text" placeholder="Select Date" readonly required />
       </div>
-
       <div class="form-row">
         <label>Doc / Sp</label>
-        <input id="docsp" type="text" placeholder="e.g. Swetha" />
+        <input id="docsp" type="text" placeholder="e.g. Swetha" required />
       </div>
-
       <div class="form-row">
         <label>Customer Name</label>
-        <input id="Customername" type="text" placeholder="Customer Name" />
+        <input id="Customername" type="text" placeholder="Customer Name" required />
       </div>
-
       <div class="form-row">
         <label>Phone</label>
-        <input id="phone" type="tel" placeholder="e.g. 9876543210" />
+        <input id="phone" type="tel" placeholder="e.g. 9876543210" required pattern="[0-9]{10}" />
       </div>
-
       <div class="form-row">
         <label>Total</label>
-        <input id="total" type="number" placeholder="e.g. 2000" />
+        <input id="total" type="number" placeholder="e.g. 2000" required min="0" />
       </div>
-
       <div class="form-row">
         <label>Advance</label>
-        <input id="adv" type="number" placeholder="e.g. 1000" />
+        <input id="adv" type="number" placeholder="e.g. 1000" required min="0" />
       </div>
-
       <div class="form-row">
         <label>Frame</label>
-        <select id="frame">
+        <select id="frame" required>
           <option value="">Select Frame</option>
           <option>Black Shell</option>
           <option>Violet Metal</option>
@@ -161,10 +82,9 @@
           <option>Plastic Full Rim</option>
         </select>
       </div>
-
       <div class="form-row">
         <label>Lens</label>
-        <select id="lens">
+        <select id="lens" required>
           <option value="">Select Lens</option>
           <option>Prog HC</option>
           <option>CR + CL Yearly</option>
@@ -173,47 +93,40 @@
           <option>Progressive</option>
         </select>
       </div>
-
       <div class="form-row">
         <label>Sent Date/Time</label>
-        <input id="sent" type="text" placeholder="Select Date" readonly />
+        <input id="sent" type="text" placeholder="Select Date" readonly required />
       </div>
-
       <div class="form-row">
         <label>Received Date/Time</label>
-        <input id="rec" type="text" placeholder="Select Date" readonly />
+        <input id="rec" type="text" placeholder="Select Date" readonly required />
       </div>
-
       <div class="form-row">
         <label>Informed</label>
-        <select id="informed">
+        <select id="informed" required>
           <option value="">Select</option>
           <option>Yes - Done</option>
           <option>No - Pending</option>
         </select>
       </div>
-
       <div class="form-row">
         <label>Feedback</label>
-        <select id="feedback">
+        <select id="feedback" required>
           <option value="">Select</option>
           <option>Done</option>
           <option>Pending</option>
           <option>Not Needed</option>
         </select>
       </div>
-
-      <button type="button" onclick="submitData()">Submit</button>
+      <button type="button" class="submit-btn" onclick="submitData()">Submit</button>
     </form>
   </div>
 
-  <!-- Modal -->
+  <!-- Response Modal -->
   <div class="modal fade" id="responseModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Message</h5>
-        </div>
+        <div class="modal-header"><h5 class="modal-title">Message</h5></div>
         <div class="modal-body" id="modalBody"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-dark" data-bs-dismiss="modal">OK</button>
@@ -222,53 +135,139 @@
     </div>
   </div>
 
-  <!-- Scripts -->
+  <!-- Update Order Modal -->
+  <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header"><h5 class="modal-title">Update Order</h5></div>
+        <div class="modal-body">
+          <input type="text" id="fetchOrderNo" class="form-control" placeholder="Enter Order No" />
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-dark" id="fetchOrderBtn">Fetch</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
-    flatpickr("#delivery", { dateFormat: "d M Y" });
-    flatpickr("#orderDate", { dateFormat: "d M Y" });
-    flatpickr("#sent", { dateFormat: "d M Y" });
-    flatpickr("#rec", { dateFormat: "d M Y" });
+  <!-- Only showing modified/added JS for clarity; the HTML stays mostly same -->
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbxisFff2ogpoaZDxDhr0xBMQcbs4jNwjALJh_3P9_JRUHZQFlTnKKZUb474kg8NB6-8/exec"; 
-    const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
+<script>
+flatpickr("#delivery", { dateFormat: "d M Y" });
+flatpickr("#orderDate", { dateFormat: "d M Y" });
+flatpickr("#sent", { dateFormat: "d M Y" });
+flatpickr("#rec", { dateFormat: "d M Y" });
 
-    async function submitData() {
+const scriptURL = "https://script.google.com/macros/s/AKfycbz45yoxv04hnm_GkBBNsSVKGxkFl1-MbuQwyX8vBpUNTYCkbTuAs-GiR0osMRd6YPo8/exec"; 
+const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
+const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
+
+document.getElementById('updateOrderBtn').addEventListener('click', () => updateModal.show());
+document.getElementById('fetchOrderBtn').addEventListener('click', fetchOrderData);
+
+// Helper to mark invalid fields
+function markInvalid(field, valid) {
+  const label = field.previousElementSibling;
+  if (!valid) {
+    field.style.borderColor = 'red';
+    label.style.color = 'red';
+  } else {
+    field.style.borderColor = '';
+    label.style.color = '';
+  }
+}
+
+// Fetch Order
+async function fetchOrderData() {
+  const orderNumber = document.getElementById('fetchOrderNo').value.trim();
+  if (!orderNumber) return alert("Enter Order No!");
+
+  try {
+    const res = await fetch(`${scriptURL}?action=getOrder&orderNo=${encodeURIComponent(orderNumber)}`);
+    const result = await res.json();
+    if (!result.row) return alert("Order not found!");
+
+    const row = result.row;
+    delivery.value = row[0] || '';
+    orderNo.value = row[1] || '';
+    orderDate.value = row[2] || '';
+    docsp.value = row[3] || '';
+    Customername.value = row[4] || '';
+    phone.value = row[5] || '';
+    total.value = row[6] || '';
+    adv.value = row[7] || '';
+    frame.value = row[8] || '';
+    lens.value = row[9] || '';
+    sent.value = row[10] || '';
+    rec.value = row[11] || '';
+    informed.value = row[12] || '';
+    feedback.value = row[13] || '';
+
+    updateModal.hide();
+  } catch (err) {
+    alert("Error fetching order.");
+    console.error(err);
+  }
+}
+
+// Validate form
+async function validateForm() {
+  let valid = true;
+  const fieldsToValidate = ['delivery','orderNo','orderDate','docsp','Customername','phone','total','adv','frame','lens','sent'];
+  
+  for (const id of fieldsToValidate) {
+    const field = document.getElementById(id);
+    const isFieldValid = field.value.trim() !== '';
+    markInvalid(field, isFieldValid);
+    if (!isFieldValid) valid = false;
+  }
+
+  // Check if orderNo is unique (only for new orders)
+  const orderValue = orderNo.value.trim();
+  if (orderValue && !window.isUpdate) {
+    try {
+      const res = await fetch(`${scriptURL}?action=checkOrder&orderNo=${encodeURIComponent(orderValue)}`);
+      const result = await res.json();
+      if (result.exists) {
+        markInvalid(orderNo, false);
+        alert("Order No already exists!");
+        valid = false;
+      }
+    } catch(err) {
+      console.error(err);
+      alert("Error validating Order No");
+      valid = false;
+    }
+  }
+
+  return valid;
+}
+
+// Submit Data
+async function submitData() {
+  window.isUpdate = false; // if user fetched an order, set to true
+  const isValid = await validateForm();
+  if (!isValid) return;
+
   const formData = new FormData();
-  formData.append('delivery', delivery.value);
-  formData.append('orderNo', orderNo.value);
-  formData.append('date', orderDate.value);
-  formData.append('docsp', docsp.value);
-  formData.append('Customername', Customername.value);
-  formData.append('phone', phone.value);
-  formData.append('total', total.value);
-  formData.append('adv', adv.value);
-  formData.append('frame', frame.value);
-  formData.append('lens', lens.value);
-  formData.append('sent', sent.value);
-  formData.append('rec', rec.value);
-  formData.append('informed', informed.value);
-  formData.append('feedback', feedback.value);
+  ['delivery','orderNo','orderDate','docsp','Customername','phone','total','adv','frame','lens','sent','rec','informed','feedback'].forEach(id => {
+    formData.append(id, document.getElementById(id).value);
+  });
 
   let message = '';
   try {
-    const res = await fetch(scriptURL, {
-      method: "POST",
-      body: formData // <--- plain form data
-    });
-
+    const res = await fetch(scriptURL, { method: "POST", body: formData });
     const result = await res.json();
     message = result.status === "success" ? "Data submitted successfully!" : "Error submitting data.";
-  } catch(err) {
-    message = "Network or server error.";
-  }
+  } catch(err) { message = "Network or server error."; }
 
   document.getElementById('modalBody').textContent = message;
   responseModal.show();
 }
+</script>
 
-  </script>
 </body>
 </html>

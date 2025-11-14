@@ -156,17 +156,16 @@
   <!-- Only showing modified/added JS for clarity; the HTML stays mostly same -->
 
 <script>
-flatpickr("#delivery", { dateFormat: "d M Y" });
-flatpickr("#orderDate", { dateFormat: "d M Y" });
-flatpickr("#sent", { dateFormat: "d M Y" });
-flatpickr("#rec", { dateFormat: "d M Y" });
+flatpickr("#delivery, #orderDate, #sent, #rec", { dateFormat: "d M Y" });
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbx9hVRJ6Lqog5CSOnlKZ7AWDVV3sqCZTudIn4gTzT2zCCDrg2RdWVMmRFwCzM-Q3vg/exec"; 
+const scriptURL = "https://script.google.com/macros/s/AKfycbxFaLSBJ5h2zdUP-YTW55GT6sUXqXCmKVglsXuwOacuIo1rFFwa1gDfgsQ8NIwJvJw/exec"; 
 const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
 const updateModal = new bootstrap.Modal(document.getElementById('updateModal'));
 
 document.getElementById('updateOrderBtn').addEventListener('click', () => updateModal.show());
 document.getElementById('fetchOrderBtn').addEventListener('click', fetchOrderData);
+
+window.isUpdate = false;
 
 // Helper to mark invalid fields
 function markInvalid(field, valid) {
@@ -180,13 +179,17 @@ function markInvalid(field, valid) {
   }
 }
 
-// Fetch Order
+// Fetch order for update modal
 async function fetchOrderData() {
   const orderNumber = document.getElementById('fetchOrderNo').value.trim();
   if (!orderNumber) return alert("Enter Order No!");
 
   try {
-    const res = await fetch(`${scriptURL}?action=getOrder&orderNo=${encodeURIComponent(orderNumber)}`);
+    const res = await fetch(scriptURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "getOrder", orderNo: orderNumber })
+    });
     const result = await res.json();
     if (!result.row) return alert("Order not found!");
 
@@ -206,37 +209,41 @@ async function fetchOrderData() {
     informed.value = row[12] || '';
     feedback.value = row[13] || '';
 
+    window.isUpdate = true;  // mark as updating
     updateModal.hide();
   } catch (err) {
-    alert("Error fetching order.");
     console.error(err);
+    alert("Error fetching order.");
   }
 }
 
-// Validate form
+// Validate form fields
 async function validateForm() {
   let valid = true;
-  const fieldsToValidate = ['delivery','orderNo','orderDate','docsp','Customername','phone','total','adv','frame','lens','sent'];
-  
-  for (const id of fieldsToValidate) {
+  const fields = ['delivery','orderNo','orderDate','docsp','Customername','phone','total','adv','frame','lens','sent'];
+
+  for (const id of fields) {
     const field = document.getElementById(id);
-    const isFieldValid = field.value.trim() !== '';
-    markInvalid(field, isFieldValid);
-    if (!isFieldValid) valid = false;
+    const ok = field.value.trim() !== '';
+    markInvalid(field, ok);
+    if (!ok) valid = false;
   }
 
-  // Check if orderNo is unique (only for new orders)
-  const orderValue = orderNo.value.trim();
-  if (orderValue && !window.isUpdate) {
+  // Only check order number uniqueness for new orders
+  if (orderNo.value.trim() && !window.isUpdate) {
     try {
-      const res = await fetch(`${scriptURL}?action=checkOrder&orderNo=${encodeURIComponent(orderValue)}`);
+      const res = await fetch(scriptURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "checkOrder", orderNo: orderNo.value.trim() })
+      });
       const result = await res.json();
       if (result.exists) {
         markInvalid(orderNo, false);
         alert("Order No already exists!");
         valid = false;
       }
-    } catch(err) {
+    } catch (err) {
       console.error(err);
       alert("Error validating Order No");
       valid = false;
@@ -246,27 +253,48 @@ async function validateForm() {
   return valid;
 }
 
-// Submit Data
+// Submit form data
 async function submitData() {
-  window.isUpdate = false; // if user fetched an order, set to true
   const isValid = await validateForm();
   if (!isValid) return;
 
-  const formData = new FormData();
-  ['delivery','orderNo','orderDate','docsp','Customername','phone','total','adv','frame','lens','sent','rec','informed','feedback'].forEach(id => {
-    formData.append(id, document.getElementById(id).value);
-  });
+  const formData = {
+    delivery: delivery.value,
+    orderNo: orderNo.value,
+    date: orderDate.value,
+    docsp: docsp.value,
+    Customername: Customername.value,
+    phone: phone.value,
+    total: total.value,
+    adv: adv.value,
+    frame: frame.value,
+    lens: lens.value,
+    sent: sent.value,
+    rec: rec.value,
+    informed: informed.value,
+    feedback: feedback.value,
+    action: window.isUpdate ? "update" : "new"
+  };
 
-  let message = '';
+  let message = "";
   try {
-    const res = await fetch(scriptURL, { method: "POST", body: formData });
+    const res = await fetch(scriptURL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData)
+    });
     const result = await res.json();
-    message = result.status === "success" ? "Data submitted successfully!" : "Error submitting data.";
-  } catch(err) { message = "Network or server error."; }
+    message = result.status === "success" ? "Data submitted successfully!" : result.message || "Error submitting data.";
+    window.isUpdate = false;  // reset update mode after submit
+  } catch (err) {
+    console.error(err);
+    message = "Network/server error.";
+  }
 
   document.getElementById('modalBody').textContent = message;
   responseModal.show();
 }
+
 </script>
 
 </body>

@@ -127,12 +127,12 @@
 
       <div class="form-row">
         <label>Doc / Sp</label>
-        <input id="docsp" type="text" placeholder="e.g. SWETHA" />
+        <input id="docsp" type="text" placeholder="e.g. Swetha" />
       </div>
 
       <div class="form-row">
         <label>Customer Name</label>
-        <input id="name" type="text" placeholder="Customer Name" />
+        <input id="Customername" type="text" placeholder="Customer Name" />
       </div>
 
       <div class="form-row">
@@ -232,7 +232,7 @@
     flatpickr("#sent", { dateFormat: "d M Y" });
     flatpickr("#rec", { dateFormat: "d M Y" });
 
-    const scriptURL = "https://script.google.com/macros/s/AKfycbx9b3Zh2nM_3xxf3X_Lzt4cBUlssgIbNyOKXl2_DWPhBJrehNGaN-r_0uvUoc9RFrgD/exec"; // must be deployed as Web App Anyone, even anonymous
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxisFff2ogpoaZDxDhr0xBMQcbs4jNwjALJh_3P9_JRUHZQFlTnKKZUb474kg8NB6-8/exec"; 
     const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
 
     async function submitData() {
@@ -241,7 +241,7 @@
   formData.append('orderNo', orderNo.value);
   formData.append('date', orderDate.value);
   formData.append('docsp', docsp.value);
-  formData.append('name', name.value);
+  formData.append('Customername', Customername.value);
   formData.append('phone', phone.value);
   formData.append('total', total.value);
   formData.append('adv', adv.value);

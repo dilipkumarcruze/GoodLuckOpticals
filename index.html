@@ -254,7 +254,7 @@
 
 
   <!-- Response Modal -->
-  <div class="modal fade" id="responseModal" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="responseModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header"><h5 class="modal-title">Message</h5></div>
@@ -267,7 +267,7 @@
   </div>
 
   <!-- Update Order Modal -->
-  <div class="modal fade" id="updateModal" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="updateModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header"><h5 class="modal-title">Update Order</h5></div>
@@ -294,7 +294,7 @@ flatpickr("#delivery, #orderDate, #sent, #rec", {
   dateFormat: "d M Y"
 });
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbxEnatWkI8lWiWlaiS4KeLt4OCPdeEac-OS2cu41TSDJ859ZPjAc2varv8eX-2S5Amh/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbwwvejz_V8MBuLnQjeqlqU8sfHASBxi7JIPCW16Ym_CJPhDfPA_e5MIPAWMlC3bF4QA/exec";
 const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
 const updateModal   = new bootstrap.Modal(document.getElementById('updateModal'));
 

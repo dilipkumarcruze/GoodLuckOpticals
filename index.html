@@ -305,14 +305,14 @@ let isUpdate = false;
 // =========================
 function markInvalid(id, valid) {
   const el = document.getElementById(id);
-  const label = el.previousElementSibling;
+  const label = el.nextElementSibling;  // FIXED
 
   if (!valid) {
     el.style.borderColor = "#ff3b3b";
-    label.style.color = "#ff3b3b";
+    if (label) label.style.color = "#ff3b3b";
   } else {
     el.style.borderColor = "";
-    label.style.color = "";
+    if (label) label.style.color = "";
   }
 }
 

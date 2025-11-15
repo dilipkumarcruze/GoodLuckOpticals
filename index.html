@@ -294,7 +294,7 @@ flatpickr("#delivery, #orderDate, #sent, #rec", {
   dateFormat: "d M Y"
 });
 
-const scriptURL = "https://script.google.com/macros/s/AKfycbwANuDuJETjnXwLex7Wpp-h_i-AzKc8urwPZBqwjwhAvGr34Z6rBxbrdReY7oN136P_/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbzIZe230in7vZWesEoqTCtmoCSYA1-fuO5jo9EAR1UNTOh0WLSKGXDDDFsOHlXZmmPx/exec";
 const responseModal = new bootstrap.Modal(document.getElementById('responseModal'));
 const updateModal   = new bootstrap.Modal(document.getElementById('updateModal'));
 
@@ -377,7 +377,12 @@ async function validateForm() {
 
   // If new entry → check duplicate
   if (!isUpdate && ok) {
-    const payload = { action: "checkOrder", orderNo: orderNo.value.trim() };
+    const orderValue = document.getElementById("orderNo").value.trim();
+
+    const payload = { 
+      action: "checkOrder", 
+      orderNo: orderValue 
+    };
 
     try {
       const res = await fetch(scriptURL, {
@@ -395,6 +400,7 @@ async function validateForm() {
       }
 
     } catch (err) {
+      console.error(err);
       alert("Validation failed.");
       return false;
     }
